@@ -46,7 +46,7 @@ const Task = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    // Update the formData based on the input type
+    // Update the formData based of input typeee
     const newValue = type === 'checkbox' ? checked : value;
   
     setFormData({

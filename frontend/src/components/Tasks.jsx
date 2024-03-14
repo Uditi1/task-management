@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import Loader from "./utils/Loader";
-import Tooltip from "./utils/Tooltip";
 
 const Tasks = () => {
   const authState = useSelector((state) => state.authReducer);
@@ -140,23 +139,19 @@ const Tasks = () => {
                       {task?.task_completed ? "Completed" : "Incomplete"}
                     </span>
 
-                    <Tooltip text={"Edit this task"} position={"top"}>
-                      <Link
-                        to={`/tasks/${task?._id}`}
-                        className="ml-auto mr-2 text-green-600 cursor-pointer"
-                      >
-                        <i className="fa-solid fa-pen"></i>
-                      </Link>
-                    </Tooltip>
+                    <Link
+                      to={`/tasks/${task?._id}`}
+                      className="ml-auto mr-2 text-green-600 cursor-pointer"
+                    >
+                      <i className="fa-solid fa-pen"></i>
+                    </Link>
 
-                    <Tooltip text={"Delete this task"} position={"top"}>
-                      <span
-                        className="text-red-500 cursor-pointer"
-                        onClick={() => handleDelete(task._id)}
-                      >
-                        <i className="fa-solid fa-trash"></i>
-                      </span>
-                    </Tooltip>
+                    <span
+                      className="text-red-500 cursor-pointer"
+                      onClick={() => handleDelete(task._id)}
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </span>
                   </div>
                   <div className="whitespace-pre">{task?.description}</div>
                 </div>
