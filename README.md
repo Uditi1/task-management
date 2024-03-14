@@ -6,7 +6,9 @@ Priority are how important a task is for user and categories as below listed
 * Low
 * Medium
 * High
+  
 Whereas the Category are based on task completion as written as listed below
+
 * Completed
 * Incompleted
 
