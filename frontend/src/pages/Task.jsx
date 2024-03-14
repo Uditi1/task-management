@@ -18,6 +18,7 @@ const Task = () => {
   const [formData, setFormData] = useState({
     description: "",
     task_priority: "",
+    task_completed: false,
   });
   const [formErrors, setFormErrors] = useState({});
 
@@ -35,27 +36,37 @@ const Task = () => {
       fetchData(config, { showSuccessToast: false }).then((data) => {
         setTask(data.task);
         setFormData({
-          description: data.task.description,
-          task_priority: data.task.task_priority,
+          description: data?.task?.description,
+          task_priority: data?.task?.task_priority,
         });
       });
     }
   }, [mode, authState, taskId, fetchData]);
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    // Update the formData based of input typeee
+    const newValue = type === 'checkbox' ? checked : value;
+  
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: newValue,
     });
   };
-  console.log(task);
+
+
+
   const handleReset = (e) => {
     e.preventDefault();
     setFormData({
-      description: task.description,
-      task_priority: task.task_priority,
+      description: task?.description,
+      task_priority: task?.task_priority,
+      task_completed: task?.task_completed
     });
   };
+
+  console.log(formData.task_completed);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -103,6 +114,14 @@ const Task = () => {
     </p>
   );
 
+  useEffect(() => {
+    if(task?.task_completed === true) {
+      setFormData(prevFormData => ({...prevFormData, task_completed: task?.task_completed}));
+    } else {
+      setFormData(prevFormData => ({...prevFormData, task_completed: false}));
+    }
+  }, [task]);
+
   return (
     <>
       <MainLayout>
@@ -120,27 +139,34 @@ const Task = () => {
                   type="description"
                   name="description"
                   id="description"
-                  value={formData.description}
+                  value={formData?.description}
                   placeholder="Write here.."
                   onChange={handleChange}
                 />
                 {fieldError("description")}
               </div>
 
-              <div className="mb-4 flex flex-col gap-3">
-                <label htmlFor="priority">Priority</label>
-                <select
-                  name="task_priority"
-                  value={formData.task_priority}
-                  onChange={handleChange}
-                  id="priority"
-                  className="w-[100px] px-3 py-2 mr-2"
-                >
-                  <option value="">choose a priority</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
+              <div className="flex gap-6 items-center">
+                <div className="mb-4 flex flex-col gap-3">
+                  <label htmlFor="priority">Priority</label>
+                  <select
+                    name="task_priority"
+                    value={formData?.task_priority}
+                    onChange={handleChange}
+                    id="priority"
+                    className="w-[100px] px-3 py-2 mr-2"
+                  >
+                    <option value="">choose a priority</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+
+                <div className="flex justify-center items-center gap-4">
+                  <input  checked={formData?.task_completed}  name="task_completed" onChange={handleChange} className="w-[20px] h-[20px]" type="checkbox" />
+                  <span>Completed</span>
+                </div>
               </div>
 
               <button
